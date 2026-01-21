@@ -1,40 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Midway Airport Commuter Schedule | River Valley METRO</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Midway Schedule | River Valley Metro</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-/* ===================== 1. COLOR PALETTE ===================== */
-:root {
-  --rv-blue-primary: #3FA9F5;
-  --rv-blue-dark: #0077c9;
-  --rv-blue-light-bg: #e8f6ff;
-  --rv-black-primary: #000000;
-  --text-dark: #1f2937;
-  --text-light: #f9fafb;
-  --card-bg: #ffffff;
-  --shadow-soft: 0 10px 30px rgba(0,0,0,0.15);
-  --border-radius-lg: 16px;
-  --holiday-red: #d32f2f;
+  <style>
+    /* ===================== 1. THEME VARIABLES ===================== */
+    :root {
+      --primary: #3FA9F5;      /* Midway Blue */
+      --primary-dark: #0077c9; /* Metro Dark Blue */
+      --accent: #60efff;
+      --text-dark: #1f2937;
+      --text-light: #ffffff;
+      --card-bg: #ffffff;
+      --shadow-soft: 0 10px 30px rgba(0,0,0,0.1);
+      --holiday-red: #d32f2f;
+      --nav-bg: rgba(255, 255, 255, 0.96);
+    }
+
+    /* ===================== 2. GLOBAL LAYOUT ===================== */
+    body {
+      margin: 0;
+      padding-bottom: 90px; /* Space for Nav */
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #f4f7f9;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .portrait-frame {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ===================== 3. HEADER & ALERTS ===================== */
+    header {
+      background-color: var(--primary-dark);
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      width: 160px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #holidayAlert {
+      display: none;
+      background-color: var(--holiday-red);
+      color: white;
+      text-align: center;
+      padding: 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===================== 4. CONTENT CARDS ===================== */
+    h2 {
+      text-align: center;
+      margin: 25px 0 15px;
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
+    .schedule-container {
+      width: 90%;
+      margin: 0 auto 20px;
+      padding: 10px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .bus-btn {
+      display: block;
+      margin: 10px auto;
+      padding: 20px;
+      width: 100%;
+      border-radius: 15px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      border: none;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .bourbonnais { background-color: var(--primary); }
+    .midway { background-color: #333; }
+
+    .note, .disclaimer {
+      width: 90%;
+      margin: 15px auto;
+      padding: 18px;
+      background-color: #fff;
+      border-left: 5px solid var(--primary);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-sizing: border-box;
+    }
+
+    .video-container {
+      width: 90%;
+      margin: 20px auto;
+      padding: 15px;
+      background: #fff;
+      border-radius: 20px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    /* ===================== 5. UNIFIED NAV BAR ===================== */
+    .fixed-nav { 
+      position: fixed; bottom: 0; left: 0; right: 0; 
+      background: var(--nav-bg); 
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      border-top: 1px solid rgba(0, 0, 0, 0.08); 
+      display: flex; justify-content: space-around; 
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); 
+      z-index: 3000;
+    }
+
+    .nav-item { 
+      color: #8e8e93; text-decoration: none; text-align: center; 
+      font-size: 10px; font-weight: 700; flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      -webkit-tap-highlight-color: transparent; transition: 0.2s;
+    }
+
+    .nav-item svg { width: 24px; height: 24px; }
+
+    /* Active State Color */
+    .nav-active { color: var(--primary-dark) !important; }
+    .nav-active svg { transform: scale(1.1); }
+    
+    .nav-item:active { transform: scale(0.9); opacity: 0.7; }
+
+  </style>
+</head>
+
+<body>
+<div class="portrait-frame">
+
+  <header>
+    <img src="https://storage.googleapis.com/token-transit.appspot.com/m-D9SrnA2icgetpHoaoGGkYOoocD6_1Tb5mhqFDprLU--logo.rivervalleymetro.png" alt="River Valley Metro Logo">
+  </header>
+
+  <div id="holidayAlert">⚠️ Holiday Service Hours in Effect</div>
+
+  <div class="note">
+    <strong>🕒 Service Hours</strong>
+    <ul style="list-style: none; padding: 0; margin: 8px 0 0;">
+      <li>• Mon–Fri: 4:45 AM – 9:30 PM</li>
+      <li>• Saturday: 7:00 AM – 9:30 PM</li>
+      <li>• Sun & Holidays: 8:00 AM – 6:40 PM</li>
+    </ul>
+  </div>
+
+  <h2 id="dayTitle">Loading Schedule...</h2>
+  
+  <div class="schedule-container" id="busButtons">
+    </div>
+
+  <div class="disclaimer">
+    ⚠️ Times shown are estimates. For assistance call: <br>
+    <a href="tel:8159374287" style="color: var(--primary-dark); font-weight: bold;">815-937-4287</a>.
+  </div>
+
+  <div class="video-container">
+    <h3 style="margin-top:0">📍 Midway Pick-up Spot</h3>
+    <video controls muted playsinline>
+      <source src="https://www.rivervalleymetro.com/wp-content/uploads/2024/02/20240212_185242.mp4" type="video/mp4">
+    </video>
+  </div>
+
+</div>
+
+<nav class="fixed-nav">
+  <a href="index.html" id="nav-home" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    HOME
+  </a>
+  <a href="tracker.html" id="nav-tracker" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+    TRACKER
+  </a>
+  <a href="midway.html" id="nav-midway" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 2v1.5h4V2h2v1.5h.5c1.1 0 2 .9 2 2v13c0 1.1-.9 2-2 2h-13c-1.1 0-2-.9-2-2v-13c0-1.1.9-2 2-2h.5V2h2v1.5h4V2h2zm3 8h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 0H7v2h2v-2zm0 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+    MIDWAY
+  </a>
+  <a href="tickets.html" id="nav-tickets" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+    TICKETS
+  </a>
+</nav>
+
+<script>
+// --- SCHEDULE DATA & LOGIC (KEEPING YOUR EXISTING LOGIC) ---
+const weekdaySchedule = [
+  { bourbonnais: "4:45 AM", midway: "6:00 AM" }, { bourbonnais: "6:00 AM", midway: "7:15 AM" },
+  { bourbonnais: "7:25 AM", midway: "8:45 AM" }, { bourbonnais: "8:45 AM", midway: "10:05 AM" },
+  { bourbonnais: "10:15 AM", midway: "11:35 AM" }, { bourbonnais: "11:35 AM", midway: "12:55 PM" },
+  { bourbonnais: "1:25 PM", midway: "2:45 PM" }, { bourbonnais: "3:05 PM", midway: "4:25 PM" },
+  { bourbonnais: "4:15 PM", midway: "5:35 PM" }, { bourbonnais: "5:50 PM", midway: "7:05 PM" },
+  { bourbonnais: "7:05 PM", midway: "8:20 PM" }
+];
+
+const saturdaySchedule = [
+  { bourbonnais: "7:00 AM", midway: "8:15 AM" }, { bourbonnais: "9:40 AM", midway: "11:00 AM" },
+  { bourbonnais: "12:30 PM", midway: "1:50 PM" }, { bourbonnais: "4:20 PM", midway: "5:40 PM" },
+  { bourbonnais: "7:05 PM", midway: "8:20 PM" }
+];
+
+const sundaySchedule = [
+  { bourbonnais: "8:00 AM", midway: "9:15 AM" }, { bourbonnais: "10:35 AM", midway: "11:55 AM" },
+  { bourbonnais: "1:20 PM", midway: "2:40 PM" }, { bourbonnais: "4:05 PM", midway: "5:25 PM" }
+];
+
+function getSchedule() {
+  const now = new Date();
+  const d = now.getDay();
+  const alertBanner = document.getElementById('holidayAlert');
+  const title = document.getElementById('dayTitle');
+  
+  const holidays = ['01-01', '05-25', '07-04', '09-07', '11-26', '12-25'];
+  const todayStr = (now.getMonth() + 1).toString().padStart(2, '0') + '-' + now.getDate().toString().padStart(2, '0');
+  const isHoliday = holidays.includes(todayStr);
+
+  if (isHoliday || d === 0) {
+    alertBanner.style.display = isHoliday ? "block" : "none";
+    title.textContent = isHoliday ? "Holiday Schedule" : "Sunday Schedule";
+    return sundaySchedule;
+  }
+
+  alertBanner.style.display = "none";
+  if (d === 6) { title.textContent = "Saturday Schedule"; return saturdaySchedule; }
+
+  title.textContent = "Weekday Schedule";
+  return weekdaySchedule;
 }
 
-/* ===================== 2. GLOBAL / 9:16 LOCK ===================== */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  font-family: 'Inter', system-ui, sans-serif;
+function parseTime(t) {
+  if (!t) return 0;
+  let [time, mod] = t.split(" ");
+  let [h, m] = time.split(":").map(Number);
+  if (mod === "PM" && h !== 12) h += 12;
+  if (mod === "AM" && h === 12) h = 0;
+  return h * 60 + m;
 }
 
-.portrait-frame {
-  width: 100vw;
-  max-width: 430px;
+function renderBuses() {
+  const now = new Date();
+  const cur = now.getHours() * 60 + now.getMinutes();
+  const schedule = getSchedule();
+  const container = document.getElementById('busButtons');
+  
+  let nextB = null; let nextM = null;
+
+  schedule.forEach(bus => {
+    if (!nextB && parseTime(bus.bourbonnais) > cur) nextB = `Bourbonnais → Midway: ${bus.bourbonnais}`;
+    if (!nextM && parseTime(bus.midway) > cur) nextM = `Midway → Bourbonnais: ${bus.midway}`;
+  });
+
+  container.innerHTML = `
+    <div class="bus-btn bourbonnais">${nextB || "No more buses today"}</div>
+    <div class="bus-btn midway">${nextM || "No more buses today"}</div>
+  `;
+}
+
+// Initial Run
+renderBuses();
+setInterval(renderBuses, 30000);
+
+// --- NAV HIGHLIGHTING LOGIC ---
+const path = window.location.pathname.split("/").pop() || "index.html";
+const navMap = { 
+  'index.html': 'nav-home', 
+  'tracker.html': 'nav-tracker', 
+  'midway.html': 'nav-midway',
+  'tickets.html': 'nav-tickets' 
+};
+if(navMap[path]) document.getElementById(navMap[path]).classList.add('nav-active');
+
+</script>
+</body>
+</html>  max-width: 430px;
   min-height: 100vh;
   margin: 0 auto;
   overflow-y: auto;
