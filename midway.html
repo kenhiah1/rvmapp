@@ -13,7 +13,6 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; margin: 0; overflow: hidden; height: 100vh; }
     .app-container { width: 100vw; height: 100vh; background: #f8fafc; position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .app-container::-webkit-scrollbar { display: none; }
-    header { background: white; border-bottom: 1px solid #e2e8f0; }
     .btn-pulse { animation: pulse-subtle 2s infinite; }
     @keyframes pulse-subtle {
       0% { box-shadow: 0 0 0 0 rgba(63, 169, 245, 0.4); }
@@ -21,22 +20,22 @@
       100% { box-shadow: 0 0 0 0 rgba(63, 169, 245, 0); }
     }
     .nav-active { color: #60a5fa !important; }
+    .nav-active svg { stroke: #60a5fa !important; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <header class="pt-12 pb-6 px-6 text-center sticky top-0 z-20 shadow-sm">
-      <div class="flex flex-col items-center">
-        <img src="https://www.rivervalleymetro.com/wp-content/themes/wp-bootstrap-rivervalley/assets/images/logo-river-valley-metro-color.png" 
-             alt="River Valley Metro" class="w-52 h-auto mb-2">
-        <div class="mt-1 text-slate-400 text-[9px] font-black uppercase tracking-[0.4em]">Midway Commuter</div>
-      </div>
+    <header class="p-6 pt-10 text-center bg-white border-b border-slate-100">
+        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Midway Commuter</h1>
+        <p class="text-blue-500 font-bold text-xs uppercase tracking-widest">Bourbonnais ↔ Chicago</p>
     </header>
 
-    <div class="p-5 space-y-6 pb-32"> <div class="bg-white rounded-[2.5rem] p-7 shadow-xl border border-slate-100">
+    <div class="p-5 space-y-6 pb-32"> 
+      <div class="bg-white rounded-[2.5rem] p-7 shadow-xl border border-slate-100">
         <div class="flex flex-col items-center mb-6">
-            <span id="dayTitle" class="bg-blue-50 text-blue-600 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">Today's Schedule</span>
+            <span id="dayTitle" class="bg-blue-50 text-blue-600 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">Checking Schedule...</span>
             <h2 class="text-xl font-black text-slate-900 tracking-tight">Current Service</h2>
         </div>
         <div id="busButtons" class="space-y-4"></div>
@@ -55,7 +54,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" ></path></svg>
             </div>
             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Status</span>
-            <span id="statusText" class="text-xs font-black text-green-600">Active</span>
+            <span id="statusText" class="text-xs font-black text-green-600 uppercase">Active</span>
         </div>
       </div>
 
@@ -70,27 +69,31 @@
     </div>
   </div>
 
-  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[400px] bg-slate-900/95 backdrop-blur-xl border border-white/10 h-16 rounded-2xl flex items-center justify-around px-2 shadow-2xl z-[9000]">
-    <a href="./index.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="index.html">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      <span class="text-[8px] font-bold uppercase">Home</span>
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[440px] bg-slate-900/95 backdrop-blur-xl border border-white/10 h-20 rounded-[2.5rem] flex items-center justify-around px-4 shadow-2xl z-[9999]">
+    <a href="./status.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="status.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Alerts</span>
     </a>
-    <a href="./map.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="map.html">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-      <span class="text-[8px] font-bold uppercase">Map</span>
+    <a href="./map.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="map.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Find Bus</span>
     </a>
-    <a href="./midway.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="midway.html">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-        <span class="text-[8px] font-bold uppercase">Midway</span>
+    <a href="./midway.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="midway.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Midway</span>
     </a>
-    <a href="./status.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="status.html">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      <span class="text-[8px] font-bold uppercase">Status</span>
+    <a href="./passes.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="passes.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Passes</span>
+    </a>
+    <a href="./weather.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="weather.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Weather</span>
     </a>
   </nav>
 
   <script>
-    // Midway Schedule Data (as per your code)
+    // Midway Schedule Data
     const weekdaySchedule = [{ b: "4:45 AM", m: "6:00 AM" }, { b: "6:00 AM", m: "7:15 AM" }, { b: "7:25 AM", m: "8:45 AM" }, { b: "8:45 AM", m: "10:05 AM" }, { b: "10:15 AM", m: "11:35 AM" }, { b: "11:35 AM", m: "12:55 PM" }, { b: "1:25 PM", m: "2:45 PM" }, { b: "3:05 PM", m: "4:25 PM" }, { b: "4:15 PM", m: "5:35 PM" }, { b: "5:50 PM", m: "7:05 PM" }, { b: "7:05 PM", m: "8:20 PM" }];
     const saturdaySchedule = [{ b: "7:00 AM", m: "8:15 AM" }, { b: "9:40 AM", m: "11:00 AM" }, { b: "12:30 PM", m: "1:50 PM" }, { b: "4:20 PM", m: "5:40 PM" }, { b: "7:05 PM", m: "8:20 PM" }];
     const sundaySchedule = [{ b: "8:00 AM", m: "9:15 AM" }, { b: "10:35 AM", m: "11:55 AM" }, { b: "1:20 PM", m: "2:40 PM" }, { b: "4:05 PM", m: "5:25 PM" }];
@@ -109,9 +112,9 @@
         const startTime = parseTime(bus[key]);
         return currentTime >= startTime && currentTime < (startTime + 75);
       });
-      if (activeBus) return `<span class="text-green-300 animate-pulse">● ROUTE ACTIVE</span><br>${activeBus[key]}`;
+      if (activeBus) return `<span class="text-green-300 animate-pulse uppercase">● Route Active</span><br>${activeBus[key]}`;
       const nextBus = schedule.find(bus => parseTime(bus[key]) > currentTime);
-      return nextBus ? `Next Departure: ${nextBus[key]}` : `<span class="text-slate-400">NOT IN SERVICE</span>`;
+      return nextBus ? `Next Departure: ${nextBus[key]}` : `<span class="text-slate-400 uppercase">Not In Service</span>`;
     }
 
     function render() {
@@ -133,34 +136,35 @@
       const statusText = document.getElementById('statusText');
       if (!systemActive) {
           statusIcon.className = "w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-2";
-          statusText.className = "text-xs font-black text-red-600";
+          statusText.className = "text-xs font-black text-red-600 uppercase";
           statusText.textContent = "No Service";
       } else {
           statusIcon.className = "w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2";
-          statusText.className = "text-xs font-black text-green-600";
+          statusText.className = "text-xs font-black text-green-600 uppercase";
           statusText.textContent = "Active";
       }
 
       document.getElementById('busButtons').innerHTML = `
         <div class="bg-[#3FA9F5] p-6 rounded-3xl text-white shadow-lg btn-pulse">
             <p class="text-[9px] font-bold uppercase opacity-80 mb-1 tracking-widest text-center">Northbound</p>
-            <p class="text-sm font-black text-center leading-tight">Bourbonnais → Midway<br>${northText}</p>
+            <p class="text-sm font-black text-center leading-tight uppercase">Bourbonnais → Midway<br>${northText}</p>
         </div>
         <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-lg">
             <p class="text-[9px] font-bold uppercase opacity-80 mb-1 tracking-widest text-center">Southbound</p>
-            <p class="text-sm font-black text-center leading-tight">Midway → Bourbonnais<br>${southText}</p>
+            <p class="text-sm font-black text-center leading-tight uppercase">Midway → Bourbonnais<br>${southText}</p>
         </div>
       `;
     }
 
-    // Navigation Active State
-    const path = window.location.pathname.split("/").pop() || "midway.html";
-    document.querySelectorAll('.nav-link').forEach(link => {
-      if(link.getAttribute('data-page') === path) link.classList.add('nav-active');
+    // Navigation Highlighting
+    document.addEventListener('DOMContentLoaded', () => {
+      const path = window.location.pathname.split("/").pop() || "midway.html";
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if(link.getAttribute('data-page') === path) link.classList.add('nav-active');
+      });
+      render();
+      setInterval(render, 30000);
     });
-
-    render();
-    setInterval(render, 30000);
   </script>
 </body>
 </html>
