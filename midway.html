@@ -1,269 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no,viewport-fit=cover" />
-  <title>River Valley METRO — Midway Commuter</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Midway Commuter | River Valley Metro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
   <style>
-    /* ----------------
-      CSS Variables 
-    ---------------- */
-    :root {
-      --rv-blue: #3FA9F5;
-      --rv-mid: #0b5fc1;
-      --accent-black: #0f172a;
-      --muted: #64748b;
-      --bg-light: #f8fafc;
-      --card-bg: #ffffff;
-      --border-radius: 2.5rem;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    /* ----------------
-      Base / Layout 
-    ---------------- */
-    body {
-      background: linear-gradient(180deg, var(--rv-blue) 0%, #d4e8ff 70%, var(--bg-light) 100%);
-      color: var(--accent-black);
-      min-height: 100vh;
-      margin: 0;
-      padding-bottom: 80px; /* Space for Nav Bar */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    header {
-      background: white;
-      border-bottom: 1px solid #e2e8f0;
-      width: 100%;
-      padding: 2.5rem 1.5rem 1rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .container {
-      width: min(430px, 94%);
-      margin-top: 1.5rem;
-    }
-
-    /* ----------------
-      Components 
-    ---------------- */
-    .btn-pulse {
-      animation: pulse-subtle 2s infinite;
-    }
-
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; margin: 0; overflow: hidden; height: 100vh; }
+    .app-container { width: 100vw; height: 100vh; background: #f8fafc; position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .app-container::-webkit-scrollbar { display: none; }
+    header { background: white; border-bottom: 1px solid #e2e8f0; }
+    .btn-pulse { animation: pulse-subtle 2s infinite; }
     @keyframes pulse-subtle {
-      0% { box-shadow: 0 0 0 0 rgba(35, 158, 217, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(35, 158, 217, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(35, 158, 217, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(63, 169, 245, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(63, 169, 245, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(63, 169, 245, 0); }
     }
-
-    /* ----------------
-      PWA Navigation Bar 
-    ---------------- */
-    .pwa-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 70px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(15px);
-      border-top: 1px solid rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 9999;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      color: #94a3b8;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .nav-item.active { color: var(--rv-blue); }
-    .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
+    .nav-active { color: #60a5fa !important; }
   </style>
 </head>
 <body>
 
-<header class="text-center">
-  <div class="flex flex-col items-center">
-    <img src="https://www.rivervalleymetro.com/wp-content/themes/wp-bootstrap-rivervalley/assets/images/logo-river-valley-metro-color.png" 
-         alt="River Valley Metro" class="w-52 h-auto mb-2">
-    <div class="mt-1 text-slate-400 text-[9px] font-black uppercase tracking-[0.4em]">Midway Commuter</div>
-  </div>
-</header>
+  <div class="app-container">
+    <header class="pt-12 pb-6 px-6 text-center sticky top-0 z-20 shadow-sm">
+      <div class="flex flex-col items-center">
+        <img src="https://www.rivervalleymetro.com/wp-content/themes/wp-bootstrap-rivervalley/assets/images/logo-river-valley-metro-color.png" 
+             alt="River Valley Metro" class="w-52 h-auto mb-2">
+        <div class="mt-1 text-slate-400 text-[9px] font-black uppercase tracking-[0.4em]">Midway Commuter</div>
+      </div>
+    </header>
 
-<main class="container space-y-6 px-2">
-  
-  <div class="bg-white rounded-[2.5rem] p-7 shadow-xl border border-slate-100">
-    <div class="flex flex-col items-center mb-6">
-      <span id="dayTitle" class="bg-blue-50 text-blue-600 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">Today's Schedule</span>
-      <h2 class="text-xl font-black text-slate-900 tracking-tight">Current Service</h2>
+    <div class="p-5 space-y-6 pb-32"> <div class="bg-white rounded-[2.5rem] p-7 shadow-xl border border-slate-100">
+        <div class="flex flex-col items-center mb-6">
+            <span id="dayTitle" class="bg-blue-50 text-blue-600 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">Today's Schedule</span>
+            <h2 class="text-xl font-black text-slate-900 tracking-tight">Current Service</h2>
+        </div>
+        <div id="busButtons" class="space-y-4"></div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <a href="tel:8159374287" class="bg-white p-5 rounded-[2rem] border border-slate-100 flex flex-col items-center shadow-sm active:scale-95 transition-all">
+            <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" ></path></svg>
+            </div>
+            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Support</span>
+            <span class="text-xs font-black text-slate-800">Dispatch</span>
+        </a>
+        <div class="bg-white p-5 rounded-[2rem] border border-slate-100 flex flex-col items-center shadow-sm">
+            <div id="statusIcon" class="w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" ></path></svg>
+            </div>
+            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Status</span>
+            <span id="statusText" class="text-xs font-black text-green-600">Active</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 rounded-[2.5rem] p-5 shadow-2xl">
+        <h3 class="text-white text-[10px] font-black text-center mb-4 uppercase tracking-[0.2em]">Midway Boarding Area</h3>
+        <div class="rounded-2xl overflow-hidden shadow-inner bg-black">
+            <video class="w-full h-44 object-cover" controls playsinline>
+                <source src="https://www.rivervalleymetro.com/wp-content/uploads/2024/02/20240212_185242.mp4" type="video/mp4">
+            </video>
+        </div>
+      </div>
     </div>
-    
-    <div id="busButtons" class="space-y-4">
-      </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4">
-    <a href="tel:8159374287" class="bg-white p-5 rounded-[2rem] border border-slate-100 flex flex-col items-center shadow-sm active:scale-95 transition-all">
-      <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-        </svg>
-      </div>
-      <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Support</span>
-      <span class="text-xs font-black text-slate-800">Dispatch</span>
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[400px] bg-slate-900/95 backdrop-blur-xl border border-white/10 h-16 rounded-2xl flex items-center justify-around px-2 shadow-2xl z-[9000]">
+    <a href="./index.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="index.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="text-[8px] font-bold uppercase">Home</span>
     </a>
-    
-    <div class="bg-white p-5 rounded-[2rem] border border-slate-100 flex flex-col items-center shadow-sm">
-      <div id="statusIcon" class="w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-        </svg>
-      </div>
-      <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Status</span>
-      <span id="statusText" class="text-xs font-black text-green-600">Active</span>
-    </div>
-  </div>
+    <a href="./map.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="map.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      <span class="text-[8px] font-bold uppercase">Map</span>
+    </a>
+    <a href="./midway.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="midway.html">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        <span class="text-[8px] font-bold uppercase">Midway</span>
+    </a>
+    <a href="./status.html" class="nav-link flex flex-col items-center gap-1 text-slate-400 py-2 flex-1" data-page="status.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span class="text-[8px] font-bold uppercase">Status</span>
+    </a>
+  </nav>
 
-  <div class="bg-slate-900 rounded-[2.5rem] p-5 shadow-2xl">
-    <h3 class="text-white text-[10px] font-black text-center mb-4 uppercase tracking-[0.2em]">Midway Boarding Area</h3>
-    <div class="rounded-2xl overflow-hidden shadow-inner bg-black">
-      <video class="w-full h-44 object-cover" controls playsinline>
-        <source src="https://www.rivervalleymetro.com/wp-content/uploads/2024/02/20240212_185242.mp4" type="video/mp4">
-      </video>
-    </div>
-  </div>
+  <script>
+    // Midway Schedule Data (as per your code)
+    const weekdaySchedule = [{ b: "4:45 AM", m: "6:00 AM" }, { b: "6:00 AM", m: "7:15 AM" }, { b: "7:25 AM", m: "8:45 AM" }, { b: "8:45 AM", m: "10:05 AM" }, { b: "10:15 AM", m: "11:35 AM" }, { b: "11:35 AM", m: "12:55 PM" }, { b: "1:25 PM", m: "2:45 PM" }, { b: "3:05 PM", m: "4:25 PM" }, { b: "4:15 PM", m: "5:35 PM" }, { b: "5:50 PM", m: "7:05 PM" }, { b: "7:05 PM", m: "8:20 PM" }];
+    const saturdaySchedule = [{ b: "7:00 AM", m: "8:15 AM" }, { b: "9:40 AM", m: "11:00 AM" }, { b: "12:30 PM", m: "1:50 PM" }, { b: "4:20 PM", m: "5:40 PM" }, { b: "7:05 PM", m: "8:20 PM" }];
+    const sundaySchedule = [{ b: "8:00 AM", m: "9:15 AM" }, { b: "10:35 AM", m: "11:55 AM" }, { b: "1:20 PM", m: "2:40 PM" }, { b: "4:05 PM", m: "5:25 PM" }];
 
-</main>
+    function parseTime(t) {
+      if (!t) return 0;
+      let [time, mod] = t.split(" ");
+      let [h, m] = time.split(":").map(Number);
+      if (mod === "PM" && h !== 12) h += 12;
+      if (mod === "AM" && h === 12) h = 0;
+      return h * 60 + m;
+    }
 
-<nav class="pwa-nav">
-  <a href="index.html" class="nav-item">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-    <span>Home</span>
-  </a>
-  <a href="tracker.html" class="nav-item">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-    <span>Tracker</span>
-  </a>
-  <a href="#" class="nav-item active">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-    <span>Midway</span>
-  </a>
-  <a href="tel:8159374287" class="nav-item">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-    <span>Support</span>
-  </a>
-</nav>
+    function getDirectionDisplay(schedule, key, currentTime) {
+      const activeBus = schedule.find(bus => {
+        const startTime = parseTime(bus[key]);
+        return currentTime >= startTime && currentTime < (startTime + 75);
+      });
+      if (activeBus) return `<span class="text-green-300 animate-pulse">● ROUTE ACTIVE</span><br>${activeBus[key]}`;
+      const nextBus = schedule.find(bus => parseTime(bus[key]) > currentTime);
+      return nextBus ? `Next Departure: ${nextBus[key]}` : `<span class="text-slate-400">NOT IN SERVICE</span>`;
+    }
 
-<script>
-  const weekdaySchedule = [
-    { b: "4:45 AM", m: "6:00 AM" }, { b: "6:00 AM", m: "7:15 AM" },
-    { b: "7:25 AM", m: "8:45 AM" }, { b: "8:45 AM", m: "10:05 AM" },
-    { b: "10:15 AM", m: "11:35 AM" }, { b: "11:35 AM", m: "12:55 PM" },
-    { b: "1:25 PM", m: "2:45 PM" }, { b: "3:05 PM", m: "4:25 PM" },
-    { b: "4:15 PM", m: "5:35 PM" }, { b: "5:50 PM", m: "7:05 PM" },
-    { b: "7:05 PM", m: "8:20 PM" }
-  ];
+    function render() {
+      const now = new Date();
+      const cur = now.getHours() * 60 + now.getMinutes();
+      const d = now.getDay();
+      let schedule = weekdaySchedule;
+      let title = "Weekday Schedule";
+      if (d === 0) { schedule = sundaySchedule; title = "Sunday Schedule"; }
+      else if (d === 6) { schedule = saturdaySchedule; title = "Saturday Schedule"; }
 
-  const saturdaySchedule = [
-    { b: "7:00 AM", m: "8:15 AM" }, { b: "9:40 AM", m: "11:00 AM" },
-    { b: "12:30 PM", m: "1:50 PM" }, { b: "4:20 PM", m: "5:40 PM" },
-    { b: "7:05 PM", m: "8:20 PM" }
-  ];
+      document.getElementById('dayTitle').textContent = title;
+      const northText = getDirectionDisplay(schedule, 'b', cur);
+      const southText = getDirectionDisplay(schedule, 'm', cur);
+      const lastDeparture = parseTime(schedule[schedule.length - 1].m) + 75;
+      const systemActive = cur < lastDeparture;
 
-  const sundaySchedule = [
-    { b: "8:00 AM", m: "9:15 AM" }, { b: "10:35 AM", m: "11:55 AM" },
-    { b: "1:20 PM", m: "2:40 PM" }, { b: "4:05 PM", m: "5:25 PM" }
-  ];
+      const statusIcon = document.getElementById('statusIcon');
+      const statusText = document.getElementById('statusText');
+      if (!systemActive) {
+          statusIcon.className = "w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-2";
+          statusText.className = "text-xs font-black text-red-600";
+          statusText.textContent = "No Service";
+      } else {
+          statusIcon.className = "w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2";
+          statusText.className = "text-xs font-black text-green-600";
+          statusText.textContent = "Active";
+      }
 
-  function parseTime(t) {
-    if (!t) return 0;
-    let [time, mod] = t.split(" ");
-    let [h, m] = time.split(":").map(Number);
-    if (mod === "PM" && h !== 12) h += 12;
-    if (mod === "AM" && h === 12) h = 0;
-    return h * 60 + m;
-  }
+      document.getElementById('busButtons').innerHTML = `
+        <div class="bg-[#3FA9F5] p-6 rounded-3xl text-white shadow-lg btn-pulse">
+            <p class="text-[9px] font-bold uppercase opacity-80 mb-1 tracking-widest text-center">Northbound</p>
+            <p class="text-sm font-black text-center leading-tight">Bourbonnais → Midway<br>${northText}</p>
+        </div>
+        <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-lg">
+            <p class="text-[9px] font-bold uppercase opacity-80 mb-1 tracking-widest text-center">Southbound</p>
+            <p class="text-sm font-black text-center leading-tight">Midway → Bourbonnais<br>${southText}</p>
+        </div>
+      `;
+    }
 
-  function getDirectionDisplay(schedule, key, currentTime) {
-    const activeBus = schedule.find(bus => {
-      const startTime = parseTime(bus[key]);
-      return currentTime >= startTime && currentTime < (startTime + 75);
+    // Navigation Active State
+    const path = window.location.pathname.split("/").pop() || "midway.html";
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if(link.getAttribute('data-page') === path) link.classList.add('nav-active');
     });
 
-    if (activeBus) {
-      return `<span class="text-blue-100 animate-pulse">● ROUTE ACTIVE</span><br>${activeBus[key]}`;
-    }
-
-    const nextBus = schedule.find(bus => parseTime(bus[key]) > currentTime);
-    if (nextBus) {
-      return `Next Departure: ${nextBus[key]}`;
-    }
-
-    return `<span class="text-slate-400">NOT IN SERVICE</span>`;
-  }
-
-  function render() {
-    const now = new Date();
-    const cur = now.getHours() * 60 + now.getMinutes();
-    const d = now.getDay();
-    
-    let schedule = weekdaySchedule;
-    let title = "Weekday Schedule";
-    if (d === 0) { schedule = sundaySchedule; title = "Sunday Schedule"; }
-    else if (d === 6) { schedule = saturdaySchedule; title = "Saturday Schedule"; }
-
-    document.getElementById('dayTitle').textContent = title;
-
-    const northText = getDirectionDisplay(schedule, 'b', cur);
-    const southText = getDirectionDisplay(schedule, 'm', cur);
-
-    const lastDeparture = parseTime(schedule[schedule.length - 1].m) + 75;
-    const systemActive = cur < lastDeparture;
-
-    const statusIcon = document.getElementById('statusIcon');
-    const statusText = document.getElementById('statusText');
-
-    if (!systemActive) {
-        statusIcon.className = "w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-2";
-        statusText.className = "text-xs font-black text-red-600";
-        statusText.textContent = "No Service";
-    } else {
-        statusIcon.className = "w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-2";
-        statusText.className = "text-xs font-black text-green-600";
-        statusText.textContent = "Active";
-    }
-
-    document.getElementById('busButtons').innerHTML = `
-      <div class="bg-[#3FA9F5] p-6 rounded-3xl text-white shadow-lg btn-pulse">
-          <p class="text-[9px] font-bold uppercase opacity-80 mb-1 tracking-widest text-center">Northbound</p>
-          <p class="text-sm font-black text-center leading-tight">Bourbonnais → Midway<br>${northText}</p>
-      </div>
-      <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-lg">
-          <p class="text-[9px] font-bold uppercase opacity-80 mb-1 tracking-widest text-center">Southbound</p>
-          <p class="text-sm font-black text-center leading-tight">Midway → Bourbonnais<br>${southText}</p>
-      </div>
-    `;
-  }
-
-  render();
-  setInterval(render, 30000);
-</script>
-
+    render();
+    setInterval(render, 30000);
+  </script>
 </body>
 </html>
