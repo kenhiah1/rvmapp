@@ -7,88 +7,61 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; margin: 0; padding: 0; overflow: hidden; height: 100vh; }
-    .app-container { width: 100vw; height: 100vh; max-width: 430px; background: #f8fafc; margin: 0 auto; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; margin: 0; padding: 0; }
+    .app-container { width: 100vw; min-height: 100vh; max-width: 430px; background: #f8fafc; margin: 0 auto; position: relative; display: flex; flex-direction: column; }
     
-    .main-content { flex: 1; overflow-y: auto; padding: 1.5rem; padding-bottom: 180px; }
-    
-    /* FIX: Adjusted bottom position and z-index to stay above nav */
-    .drawer { 
-      position: absolute; 
-      bottom: 0; 
-      left: 0; 
-      right: 0; 
-      background: #f1f5f9; 
-      border-radius: 30px 30px 0 0; 
-      z-index: 50; 
-      transform: translateY(calc(100% - 160px)); /* Shows handle above nav */
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-      max-height: 85vh; 
-      display: flex; 
-      flex-direction: column; 
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.3); 
-    }
-    .drawer.open { transform: translateY(0) !important; }
-    
-    .drawer-handle { 
-      height: 75px; 
-      flex-shrink: 0; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center; 
-      background: white; 
-      border-radius: 30px 30px 0 0; 
-      border-bottom: 1px solid #e2e8f0; 
-      cursor: pointer;
-    }
-
-    .scroll-hide::-webkit-scrollbar { display: none; }
+    /* Ensuring content doesn't get stuck behind the nav bar */
+    .main-content { flex: 1; padding: 1.5rem; padding-bottom: 120px; }
     
     .dir-toggle { display: none; background: #e2e8f0; border-radius: 12px; padding: 4px; margin-bottom: 24px; }
-    .dir-toggle button { flex: 1; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 800; transition: 0.3s; }
+    .dir-toggle button { flex: 1; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 800; transition: 0.3s; }
     .dir-toggle button.active { background: #239ed9; color: white; box-shadow: 0 4px 12px rgba(35, 158, 217, 0.3); }
+
+    /* Clean card style for the schedule list */
+    .schedule-section { display: none; margin-top: 2rem; border-top: 2px solid #e2e8f0; pt-6; }
     
-    .nav-link.active { color: #38bdf8; }
+    .nav-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; z-index: 9999; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <div class="main-content scroll-hide">
+    <div class="main-content">
       <div class="pt-4 mb-6">
         <h1 class="text-2xl font-extrabold text-slate-900 leading-tight">River Valley Metro</h1>
         <p class="text-sky-500 font-bold text-xs uppercase tracking-widest">Digital Schedule</p>
       </div>
 
-      <input type="text" id="destSearch" onkeyup="searchDest()" placeholder="Search stops..." class="w-full bg-white border border-slate-200 p-4 rounded-2xl mb-4 shadow-sm outline-none focus:ring-2 focus:ring-sky-500/20">
-
-      <select id="routeSelect" onchange="initRoute()" class="w-full bg-white border border-slate-200 p-4 rounded-2xl mb-6 font-bold text-slate-700 shadow-sm appearance-none">
-        <option value="">-- Select Route --</option>
-        <option value="1">Route 1 - Meadowview</option>
-        <option value="2">Route 2 - Mall / Walmart</option>
-        <option value="3">Route 3 - Target / Bradley</option>
-        <option value="4">Route 4 - East Court Village</option>
-        <option value="5">Route 5 - Aroma Park</option>
-        <option value="6">Route 6 - KCC (M-F)</option>
-        <option value="7NP">Route 7 - Non-Peak</option>
-        <option value="7P">Route 7 - Peak Service</option>
-        <option value="8">Route 8 - KHS / Jewel</option>
-        <option value="9">Route 9 - Manteno</option>
-        <option value="10">Route 10 - Bourbonnais</option>
-        <option value="11">Route 11 - ONU / Mall</option>
-        <option value="12">Route 12 - Meijer / Perry Farm</option>
-        <option value="14">Route 14 - Merchant St</option>
-      </select>
+      <div class="space-y-4 mb-8">
+        <input type="text" id="destSearch" onkeyup="searchDest()" placeholder="Search stops..." class="w-full bg-white border border-slate-200 p-4 rounded-2xl shadow-sm outline-none focus:border-sky-400">
+        
+        <select id="routeSelect" onchange="initRoute()" class="w-full bg-white border border-slate-200 p-4 rounded-2xl font-bold text-slate-700 shadow-sm appearance-none">
+          <option value="">-- Select Route --</option>
+          <option value="1">Route 1 - Meadowview</option>
+          <option value="2">Route 2 - Mall / Walmart</option>
+          <option value="3">Route 3 - Target / Bradley</option>
+          <option value="4">Route 4 - East Court Village</option>
+          <option value="5">Route 5 - Aroma Park</option>
+          <option value="6">Route 6 - KCC (M-F)</option>
+          <option value="7NP">Route 7 - Non-Peak</option>
+          <option value="7P">Route 7 - Peak Service</option>
+          <option value="8">Route 8 - KHS / Jewel</option>
+          <option value="9">Route 9 - Manteno</option>
+          <option value="10">Route 10 - Bourbonnais</option>
+          <option value="11">Route 11 - ONU / Mall</option>
+          <option value="12">Route 12 - Meijer / Perry Farm</option>
+          <option value="14">Route 14 - Merchant St</option>
+        </select>
+      </div>
 
       <div id="route4Toggle" class="dir-toggle flex gap-2">
         <button id="btnEast" class="active" onclick="setDir('east')">EASTBOUND</button>
         <button id="btnWest" onclick="setDir('west')">WESTBOUND</button>
       </div>
 
-      <div id="etaDisplay" style="display:none;" class="bg-slate-900 rounded-[32px] p-8 text-white shadow-2xl">
-        <p class="text-sky-400 font-extrabold text-xs uppercase mb-2" id="dirLabel">Scheduled Arrival</p>
-        <h2 id="stopName" class="text-2xl font-extrabold mb-6">--</h2>
+      <div id="etaDisplay" style="display:none;" class="bg-slate-900 rounded-[32px] p-8 text-white shadow-2xl mb-8">
+        <p class="text-sky-400 font-extrabold text-xs uppercase mb-2" id="dirLabel">Next Arrival</p>
+        <h2 id="stopName" class="text-2xl font-extrabold mb-6 leading-tight">--</h2>
         <div class="flex items-baseline gap-2 mb-6">
           <span id="bigTime" class="text-6xl font-black tracking-tighter">--:--</span>
           <span id="ampm" class="text-xl font-bold opacity-40">--</span>
@@ -97,24 +70,23 @@
           <span id="minsAway" class="text-sm font-extrabold uppercase">Calculating...</span>
         </div>
       </div>
+
+      <div id="scheduleSection" class="schedule-section pt-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-slate-900 font-black text-sm uppercase tracking-widest">Full Daily Times</h3>
+          <span class="text-[10px] bg-slate-200 text-slate-600 px-2 py-1 rounded-md font-bold uppercase">All Stops</span>
+        </div>
+        <div id="fullSchedList" class="space-y-3">
+          </div>
+      </div>
     </div>
 
-    <div id="drawer" class="drawer">
-      <div class="drawer-handle" onclick="toggleDrawer()">
-        <div class="w-12 h-1.5 bg-slate-300 rounded-full mb-3"></div>
-        <span class="text-slate-900 font-extrabold text-[10px] uppercase tracking-[0.2em]">View Full Schedule</span>
-      </div>
-      <div id="fullSchedList" class="flex-1 overflow-y-auto px-6 py-6 space-y-3 bg-slate-100">
-        <p class="text-center text-slate-400 text-sm italic">Select a route to view times</p>
-      </div>
-    </div>
-
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[440px] bg-slate-900/95 backdrop-blur-xl border border-white/10 h-20 rounded-[2.5rem] flex items-center justify-around px-4 shadow-2xl z-[100]">
-      <a href="#" class="nav-link flex flex-col items-center gap-1 text-slate-400 flex-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-        <span class="text-[8px] font-black uppercase">Alerts</span>
+    <nav class="nav-bar bg-slate-900/95 backdrop-blur-xl border border-white/10 h-20 rounded-[2.5rem] flex items-center justify-around px-4 shadow-2xl">
+      <a href="#" class="flex flex-col items-center gap-1.5 text-slate-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        <span class="text-[8px] font-black uppercase">Map</span>
       </a>
-      <a href="#" class="nav-link active flex flex-col items-center gap-1 flex-1">
+      <a href="#" class="flex flex-col items-center gap-1.5 text-sky-400">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
         <span class="text-[8px] font-black uppercase">Schedule</span>
       </a>
@@ -123,6 +95,7 @@
 
   <script>
     let currentDir = 'east';
+    // [Data kept same for functionality]
     const routeData = {
       "1": { startH: 5, endH: 21, stops: [["Family Dollar", 5], ["Azzarelli Apts", 8], ["St. Mary's", 15], ["Walgreens Court", 19], ["Metro Centre", 25], ["Family Dollar", 35], ["Azzarelli Apts", 38], ["St. Mary's", 45], ["Walgreens Court", 49], ["Metro Centre", 55]] },
       "2": { startH: 5, endH: 21, stops: [["Meijer (NB)", 7], ["Walmart", 14], ["Signature/Jack", 19], ["Northfield Mall", 25], ["Mall (Dep)", 30], ["Signature/Jack", 33], ["Adventure Church", 38], ["Meijer (SB)", 45], ["Broadway Shelter", 51], ["Village Hall", 58]] },
@@ -149,6 +122,7 @@
       if(!rid) return;
       document.getElementById('route4Toggle').style.display = (rid === "4") ? "flex" : "none";
       document.getElementById('etaDisplay').style.display = 'block';
+      document.getElementById('scheduleSection').style.display = 'block';
       updateLiveETA();
       buildFullSchedule();
     }
@@ -168,9 +142,7 @@
       const curM = now.getMinutes();
       const route = routeData[rid];
 
-      const startH = route.startH || 5;
-      const startM = route.startM || 0;
-      if ((curH < startH) || (curH >= route.endH)) {
+      if (curH < route.startH || curH >= route.endH) {
         document.getElementById('stopName').innerText = "Service Offline";
         document.getElementById('bigTime').innerText = "--:--";
         document.getElementById('minsAway').innerText = "NOT RUNNING";
@@ -194,33 +166,21 @@
     function buildFullSchedule() {
       const rid = document.getElementById('routeSelect').value;
       const route = routeData[rid];
-      const now = new Date();
-      const currentTotalMins = (now.getHours() * 60) + now.getMinutes();
-      
       let html = "";
       let activeStops = (rid === "4") ? route[currentDir] : route.stops;
-      const startH = route.startH || 5;
-
-      for(let h = startH; h < route.endH; h++) {
+      
+      for(let h = route.startH; h < route.endH; h++) {
         [...activeStops].sort((a,b) => a[1] - b[1]).forEach(s => {
-          const stopTotalMins = (h * 60) + s[1];
-          const isNext = stopTotalMins >= currentTotalMins && stopTotalMins < currentTotalMins + 30;
-          
           html += `
-            <div class="flex justify-between items-center p-4 bg-white rounded-2xl border ${isNext ? 'border-sky-500 ring-1 ring-sky-500' : 'border-slate-200'} shadow-sm">
-              <div class="flex flex-col">
-                <span class="font-bold text-slate-900 text-sm">${s[0]}</span>
-                ${isNext ? '<span class="text-[10px] text-sky-500 font-black uppercase">Next Bus</span>' : ''}
-              </div>
-              <span class="font-extrabold text-slate-900 text-sm">${h % 12 || 12}:${s[1].toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}</span>
+            <div class="flex justify-between p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
+              <span class="font-bold text-slate-800 text-sm">${s[0]}</span>
+              <span class="font-extrabold text-sky-600 text-xs">${h % 12 || 12}:${s[1].toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}</span>
             </div>`;
         });
       }
       document.getElementById('fullSchedList').innerHTML = html;
     }
 
-    function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-    
     function searchDest() {
       const q = document.getElementById('destSearch').value.toLowerCase();
       if(q.length < 3) return;
