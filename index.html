@@ -6,42 +6,81 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>River Valley Metro | Home</title>
-  <link rel="manifest" href="manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    /* Dark background to hide mobile bounce gaps */
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; margin: 0; overflow: hidden; height: 100vh; }
-    
-    .app-container { width: 100vw; height: 100vh; background: #f8fafc; position: relative; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; overflow: hidden; height: 100vh; color: white; }
+
+    /* WebGL Background Layer */
+    #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    /* App Container (Scrolling Layer) */
+    .app-container { 
+      position: relative; 
+      width: 100vw; 
+      height: 100vh; 
+      z-index: 10; 
+      overflow-y: auto; 
+      -webkit-overflow-scrolling: touch; 
+      background: transparent; 
+    }
     .app-container::-webkit-scrollbar { display: none; }
+
+    /* Splash Screen */
+    #splash { 
+      position: fixed; 
+      inset: 0; 
+      background: #000; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 10000; 
+      transition: opacity 0.8s ease; 
+    }
     
-    #splash { position: fixed; inset: 0; background: radial-gradient(circle at center, #239ed9 0%, #1a7ba8 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: opacity 0.5s ease; }
-    
-    .loader-progress { width: 40%; height: 100%; background: white; animation: loading 1.5s infinite ease-in-out; }
+    .loader-progress { width: 40%; height: 100%; background: #3b82f6; animation: loading 1.5s infinite ease-in-out; }
     @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
-    
-    .nav-active { color: #3b82f6 !important; }
-    
-    /* Ensure nav is always visible on top */
+
+    /* Premium UI Components */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 2rem;
+    }
+
+    .glow-text {
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     nav { z-index: 9000 !important; }
+    .nav-active { color: #3b82f6 !important; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
   </style>
 </head>
 <body>
+
+  <canvas id="canvas"></canvas>
+
   <div id="splash">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjBRXORehZGVAUiu8vzUjk_Jli1YGIERGWwA&s" alt="Logo" class="w-24 h-24 rounded-full border-4 border-white shadow-xl">
     <h1 class="text-white text-xl font-black mt-4 tracking-tighter uppercase">River Valley Metro</h1>
-    <div class="mt-6 w-24 h-1 bg-white/20 rounded-full overflow-hidden">
+    <div class="mt-6 w-24 h-1 bg-white/10 rounded-full overflow-hidden">
       <div class="loader-progress"></div>
     </div>
   </div>
 
   <div class="app-container">
-    <div id="mainContent" class="opacity-0 transition-opacity duration-700 p-6 pt-10 pb-32">
-      <header class="text-center mb-8">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
-        <h1 class="text-2xl font-black text-slate-900 tracking-tight">River Valley Metro</h1>
-        <p class="text-blue-500 font-bold text-xs uppercase tracking-widest">Official Transit App</p>
+    <div id="mainContent" class="opacity-0 transition-opacity duration-1000 p-6 pt-10 pb-40">
+      
+      <header class="text-center mb-10">
+        <div class="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-6"></div>
+        <h1 class="text-3xl font-black glow-text tracking-tight">River Valley Metro</h1>
+        <p class="text-blue-400 font-bold text-xs uppercase tracking-[0.3em]">Official Transit Portal</p>
       </header>
 
       <section id="notices-section" class="mb-8 hidden">
@@ -50,59 +89,123 @@
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
             </span>
-            <h2 class="text-sm font-black text-slate-700 uppercase tracking-wider">Service Notices</h2>
+            <h2 class="text-sm font-black text-white/80 uppercase tracking-wider">Service Notices</h2>
         </div>
         <div id="notices-container" class="space-y-3"></div>
       </section>
 
-      <div class="space-y-5">
-        <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
-          <h2 class="font-extrabold text-slate-800 mb-4 flex items-center justify-between">
+      <div class="space-y-6">
+        <div class="glass-card p-6 shadow-2xl">
+          <h2 class="font-extrabold text-white mb-4 flex items-center justify-between">
             Local & Metro Plus 
-            <span class="text-[10px] bg-slate-100 px-2 py-1 rounded-md text-slate-500 font-bold uppercase">Hours</span>
+            <span class="text-[10px] bg-blue-500/20 px-2 py-1 rounded-md text-blue-400 font-bold uppercase tracking-tighter">Hours of Operation</span>
           </h2>
           <div class="space-y-3 text-sm">
-            <div class="flex justify-between"><span class="text-slate-400 font-medium">Mon–Fri</span><span class="font-bold">5:00A - 9:30P</span></div>
-            <div class="flex justify-between"><span class="text-slate-400 font-medium">Saturday</span><span class="font-bold">7:00A - 9:30P</span></div>
-            <div class="flex justify-between text-blue-600 font-bold"><span>Sun / Holiday</span><span>8:00A - 4:00P</span></div>
+            <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-white/40 font-medium">Mon–Fri</span><span class="font-bold text-white/90">5:00A - 9:30P</span></div>
+            <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-white/40 font-medium">Saturday</span><span class="font-bold text-white/90">7:00A - 9:30P</span></div>
+            <div class="flex justify-between text-blue-400 font-bold italic"><span>Sun / Holiday</span><span>8:00A - 4:00P</span></div>
           </div>
         </div>
 
-        <div class="rounded-3xl overflow-hidden shadow-sm border-4 border-white">
-          <img src="https://www.rivervalleymetro.com/wp-content/uploads/2021/07/Agency-Website-Digital-Collegian-300x250px-1-e1632412572995.png" class="w-full h-auto" alt="Ad">
+        <div class="rounded-3xl overflow-hidden shadow-2xl border-2 border-white/10 bg-white/5">
+          <img src="https://www.rivervalleymetro.com/wp-content/uploads/2021/07/Agency-Website-Digital-Collegian-300x250px-1-e1632412572995.png" class="w-full h-auto mix-blend-screen opacity-90" alt="Ad">
         </div>
       </div>
     </div>
   </div>
 
- <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[440px] bg-slate-900/95 backdrop-blur-xl border border-white/10 h-20 rounded-[2.5rem] flex items-center justify-around px-4 shadow-2xl z-[9999]">
-  <a href="./status.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="status.html">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-    <span class="text-[8px] font-black uppercase tracking-tighter">Alerts</span>
-  </a>
-  <a href="./map.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="map.html">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-    <span class="text-[8px] font-black uppercase tracking-tighter">Find Bus</span>
-  </a>
-  <a href="./midway.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="midway.html">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-    <span class="text-[8px] font-black uppercase tracking-tighter">Midway</span>
-  </a>
-  <a href="./passes.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="passes.html">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5z" /></svg>
-    <span class="text-[8px] font-black uppercase tracking-tighter">Passes</span>
-  </a>
-  <a href="./weather.html" class="nav-link flex flex-col items-center gap-1.5 text-slate-400 flex-1 transition-all" data-page="weather.html">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
-    <span class="text-[8px] font-black uppercase tracking-tighter">Weather</span>
-  </a>
-</nav>
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[440px] bg-black/40 backdrop-blur-3xl border border-white/10 h-20 rounded-[2.5rem] flex items-center justify-around px-4 shadow-2xl z-[9999]">
+    <a href="./status.html" class="nav-link flex flex-col items-center gap-1.5 text-white/30 flex-1 transition-all" data-page="status.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Alerts</span>
+    </a>
+    <a href="./map.html" class="nav-link flex flex-col items-center gap-1.5 text-white/30 flex-1 transition-all" data-page="map.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Find Bus</span>
+    </a>
+    <a href="./midway.html" class="nav-link flex flex-col items-center gap-1.5 text-white/30 flex-1 transition-all" data-page="midway.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Midway</span>
+    </a>
+    <a href="./passes.html" class="nav-link flex flex-col items-center gap-1.5 text-white/30 flex-1 transition-all" data-page="passes.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Passes</span>
+    </a>
+    <a href="./weather.html" class="nav-link flex flex-col items-center gap-1.5 text-white/30 flex-1 transition-all" data-page="weather.html">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+      <span class="text-[8px] font-black uppercase tracking-tighter">Weather</span>
+    </a>
+  </nav>
+
+  <script id="vertexShader" type="x-shader/x-vertex">
+    attribute vec2 position;
+    void main() { gl_Position = vec4(position, 0.0, 1.0); }
+  </script>
+  <script id="fragmentShader" type="x-shader/x-fragment">
+    precision highp float;
+    uniform float uTime;
+    uniform vec2 uResolution;
+    
+    // Optimized Prism Shader Logic
+    void main() {
+        vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / min(uResolution.x, uResolution.y);
+        float time = uTime * 0.15;
+        
+        vec3 col = vec3(0.0);
+        for(float i = 1.0; i < 4.0; i++) {
+            uv.x += 0.3 / i * sin(i * 3.0 * uv.y + time);
+            uv.y += 0.3 / i * cos(i * 3.0 * uv.x + time);
+            col += 0.005 / abs(sin(time + uv.y + uv.x));
+        }
+        
+        // Dark blue/purple theme
+        col *= vec3(0.1, 0.4, 0.9);
+        gl_FragColor = vec4(col, 1.0);
+    }
+  </script>
 
   <script>
-    if ('serviceWorker' in navigator) { 
-      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js')); 
+    // WebGL Initialization
+    const canvas = document.getElementById('canvas');
+    const gl = canvas.getContext('webgl');
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      gl.viewport(0, 0, canvas.width, canvas.height);
     }
+    window.addEventListener('resize', resize);
+    resize();
 
+    const program = gl.createProgram();
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, document.getElementById('vertexShader').textContent);
+    gl.compileShader(vs);
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, document.getElementById('fragmentShader').textContent);
+    gl.compileShader(fs);
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+
+    const posLoc = gl.getAttribLocation(program, 'position');
+    const uTime = gl.getUniformLocation(program, 'uTime');
+    const uRes = gl.getUniformLocation(program, 'uResolution');
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+
+    function render(t) {
+      gl.useProgram(program);
+      gl.uniform1f(uTime, t * 0.001);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.enableVertexAttribArray(posLoc);
+      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    // App Logic (Navigation Activation & Splash)
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     document.querySelectorAll('.nav-link').forEach(link => {
       if(link.getAttribute('data-page') === currentPage) link.classList.add('nav-active');
@@ -114,7 +217,7 @@
         splash.style.opacity = '0';
         setTimeout(() => splash.style.display = 'none', 500);
         document.getElementById('mainContent').classList.remove('opacity-0');
-      }, 1500);
+      }, 2000);
     });
   </script>
 </body>
